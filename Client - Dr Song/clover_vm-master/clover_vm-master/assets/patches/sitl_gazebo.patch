@@ -1,0 +1,36 @@
+diff --git a/src/gazebo_gps_plugin.cpp b/src/gazebo_gps_plugin.cpp
+index 1195f5e..6540596 100644
+--- a/src/gazebo_gps_plugin.cpp
++++ b/src/gazebo_gps_plugin.cpp
+@@ -41,7 +41,6 @@ GpsPlugin::~GpsPlugin()
+   if (updateSensorConnection_)
+     updateSensorConnection_->~Connection();
+   parentSensor_.reset();
+-  world_->Reset();
+ }
+ 
+ void GpsPlugin::Load(sensors::SensorPtr _parent, sdf::ElementPtr _sdf)
+diff --git a/src/gazebo_groundtruth_plugin.cpp b/src/gazebo_groundtruth_plugin.cpp
+index 441ebd9..dd66e12 100644
+--- a/src/gazebo_groundtruth_plugin.cpp
++++ b/src/gazebo_groundtruth_plugin.cpp
+@@ -51,7 +51,6 @@ GroundtruthPlugin::~GroundtruthPlugin()
+ {
+   if (updateConnection_)
+     updateConnection_->~Connection();
+-  world_->Reset();
+ }
+ 
+ void GroundtruthPlugin::Load(physics::ModelPtr _model, sdf::ElementPtr _sdf)
+diff --git a/src/gazebo_lidar_plugin.cpp b/src/gazebo_lidar_plugin.cpp
+index 38374e6..1b2fbf8 100644
+--- a/src/gazebo_lidar_plugin.cpp
++++ b/src/gazebo_lidar_plugin.cpp
+@@ -47,7 +47,6 @@ LidarPlugin::~LidarPlugin()
+   newLaserScansConnection_->~Connection();
+   newLaserScansConnection_.reset();
+   parentSensor_.reset();
+-  world_->Reset();
+ }
+ 
+ /////////////////////////////////////////////////

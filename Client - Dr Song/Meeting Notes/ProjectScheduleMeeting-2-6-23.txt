@@ -1,0 +1,10 @@
+*add senior design comp date to project file (find this date!)
+*have team leader
+*divide tasks among everyone (resource managmenet)
+-drone operator
+-car operator
+-communication interface operator (image compression and trans between drone and car)
+-2 people to handle Open CV 
+*TRY to make/win competition! --> demo: detect object and stop the car (no optimization yet)
+	-drone follows car, stops car when sees signal (like red tape/block)
+*then next semester focus on testing/optimization algorithms

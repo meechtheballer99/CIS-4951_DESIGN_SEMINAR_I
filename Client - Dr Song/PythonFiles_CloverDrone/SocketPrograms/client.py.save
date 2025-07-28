@@ -1,0 +1,33 @@
+# Ryan Sauer
+# CIS 427
+# Socket Program
+# This program is the client script for the yamotd protocol
+
+from socket import *
+
+
+MSGS= ["MSGGET\n", "MSGSTORE\n", "QUIT\n"]  # Predefined yamotd messages
+DELIM = '\n'                                # Response Delim
+
+SERVER_NAME = "192.168.11.133"                            # Server IP (User defiend)
+SERVER_PORT = 10600                         # Server Port (Predefined)
+CLIENT_SOCKET = socket(AF_INET, SOCK_STREAM)    # Client Socket Creation
+
+
+print("YAMOTD Protocol Initiated")
+SERVER_NAME = str(input("Please input the server you wish to communicate with: "))
+_SOCKET.connect((SERVER_NAME, SERVER_PORT))
+
+while True:
+    USER_INPUT = input("[1] MSGGET\n[2] MSGSTORE\n[3] QUIT\nWhat kind of message would you like to send: ").upper()
+
+    if USER_INPUT == '1' or USER_INPUT == 'MSGGET':
+        get_pkt()
+    elif USER_INPUT == '2' or USER_INPUT == 'MSGSTORE':
+        NEW_MSG = input("Please input a new message of the day: ").replace('\n', ' ')
+        store_pkt(NEW_MSG)
+    elif USER_INPUT == '3' or USER_INPUT == 'QUIT':
+        if quit_pkt():
+            break
+    else:
+        print(USER_INPUT + ' is an unkown message type')

@@ -1,0 +1,76 @@
+{
+  "variables": {
+    "user": "clover",
+    "password": "clover",
+    "vm-name": "clover-devel",
+    "scriptsDir": "scripts",
+    "assetsDir": "assets"
+  },
+  "builders": [{
+    "type": "virtualbox-ovf",
+    "vm_name": "{{user `vm-name`}}",
+    "source_path": "output-virtualbox-iso/{{user `vm-name`}}.ova",
+    "format": "ova",
+    "guest_additions_mode": "disable",
+
+    "headless": "false",
+
+    "vboxmanage": [
+      ["modifyvm", "{{.Name}}", "--memory", "6144", "--vram", "128", "--mouse", "usbtablet", "--rtcuseutc", "on", "--nictype1", "virtio"],
+      ["storageattach", "{{.Name}}", "--storagectl", "SATA Controller", "--port", "0", "--nonrotational", "on", "--discard", "on"]
+    ],
+    "import_opts": "importtovdi",
+
+    "ssh_username": "{{user `user`}}",
+    "ssh_password": "{{user `password`}}",
+    "ssh_wait_timeout": "10000s",
+
+    "boot_wait": "30s",
+
+    "virtualbox_version_file": ".vbox_version",
+
+    "shutdown_command": "echo '{{user `password`}}' | sudo -S shutdown -P now",
+    "vboxmanage_post": [
+      ["modifyvm", "{{.Name}}", "--memory", "2048"]
+    ],
+    "export_opts": [
+      "--ovf10",
+      "--manifest"
+    ]
+  }],
+  "provisioners": [{
+    "type": "file",
+    "source": "{{user `assetsDir`}}/background/",
+    "destination": "/home/{{user `user`}}/Pictures"
+  },
+  {
+    "type": "file",
+    "source": "{{user `assetsDir`}}/pictures/",
+    "destination": "/home/{{user `user`}}/Pictures"
+  },
+  {
+    "type": "file",
+    "source": "{{user `assetsDir`}}/desktop/",
+    "destination": "/home/{{user `user`}}/Desktop"
+  },
+  {
+    "type": "file",
+    "source": "{{user `assetsDir`}}/packages",
+    "destination": "/tmp"
+  },
+  {
+    "type": "file",
+    "source": "{{user `assetsDir`}}/patches",
+    "destination": "/tmp"
+  },
+  {
+    "type": "file",
+    "source": "{{user `assetsDir`}}/clover_vm_version",
+    "destination": "/tmp/clover_vm_version"
+  },
+  {
+    "type": "shell",
+    "script": "scripts/install_software.sh",
+    "execute_command": "PASSWORD='{{user `password`}}' bash '{{.Path}}'"
+  }]
+}

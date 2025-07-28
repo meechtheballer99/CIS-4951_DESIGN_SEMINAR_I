@@ -1,0 +1,44 @@
+{
+  "variables" : {
+    "user": "clover",
+    "password": "clover",
+    "vm-name": "clover-devel"
+  },
+  "builders": [{
+    "type": "virtualbox-iso",
+    "vm_name": "{{user `vm-name`}}",
+    "guest_os_type": "Ubuntu_64",
+    "format": "ova",
+    "guest_additions_mode": "disable",
+    "disk_size": "30000",
+    "hard_drive_interface": "sata",
+    "vboxmanage": [
+      ["modifyvm", "{{.Name}}", "--memory", "2048", "--mouse", "usbtablet", "--apic", "on", "--rtcuseutc", "on", "--nictype1", "virtio"],
+      ["storageattach", "{{.Name}}", "--storagectl", "SATA Controller", "--port", "0", "--nonrotational", "on", "--discard", "on"]
+    ],
+
+    "headless": "false",
+
+    "iso_url": "http://archive.ubuntu.com/ubuntu/dists/focal/main/installer-amd64/current/legacy-images/netboot/mini.iso",
+    "iso_checksum": "0e79e00bf844929d40825b1f0e8634415cda195ba23bae0b041911fde4dfe018",
+    "iso_checksum_type": "sha256",
+
+    "ssh_password": "{{user `password`}}",
+    "ssh_username": "{{user `user`}}",
+    "ssh_wait_timeout": "10000s",
+
+    "boot_command": [
+      "<esc><wait>",
+      "install auto=true priority=critical url=http://{{.HTTPIP}}:{{.HTTPPort}}/preseed.cfg",
+      "<enter><wait>"
+    ],
+
+    "boot_wait": "4s",
+    "http_directory": "http",
+    "shutdown_command": "echo {{user `password`}} | sudo -S shutdown -P now",
+
+    "vboxmanage_post": [
+      ["modifyhd", "output-virtualbox-iso/{{.Name}}.vdi", "--compact"]
+    ]
+  }]
+}
